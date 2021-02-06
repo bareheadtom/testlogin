@@ -1,5 +1,8 @@
 //app.js
 App({
+  data:{
+    code:null
+  },
   onLaunch: function () {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
@@ -11,18 +14,31 @@ App({
       success: res => {
         console.log(res.code)
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        //wx.setStorageSync('url', "https://localhost:8080/");
+        //wx.setStorageSync('url', "https://124.70.211.169:8080/");
+        wx.setStorageSync('url', "https://api.jianlisenlin.com:8080/");
+        
         wx.request({  
-          url: 'http://localhost:8080/codeKeys/' + res.code,
+          url: wx.getStorageSync('url')+'codeKeys/' + res.code,
+          //url: 'http://124.70.211.169:8080/codeKeys/' + res.code,
+          
           method:"POST",
           data:{
             'code':res.code
           },
           success(res){
+            console.log("hahahha")
             console.log(res) // res:{'code':'','msg':'','obj':''}
+            console.log(res.data.obj)
+            wx.setStorageSync('code', res.data.obj)
           }
         })
       }
     })
+
+    var code=wx.getStorageSync('code')
+    console.log("aaaaaa")
+    console.log("code"+code)
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -45,6 +61,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    code:null
   }
 })
