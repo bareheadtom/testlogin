@@ -1,0 +1,3 @@
+<!--pages/index/index.wxml-->
+<button type="primary" bindtap="testTap">登录</button>
+<button type="primary" bindtap="testTap2">测试接口</button>
